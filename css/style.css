@@ -6,7 +6,9 @@ body {
   font-style: oblique;
   text-align: center;
 }
-
+.home{
+  margin-top: -25px;
+}
 }
 .none {
   display: none;
