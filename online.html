@@ -3,17 +3,18 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+    <link rel="shortcut icon" href="img/icon.png" />
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/style.css" />
 
     <title>Si Biru</title>
   </head>
+
   <body id="home">
     <!-- Menu -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-lg fixed-top">
       <div class="container">
-        <a class="navbar-brand" href="index.html"> <img src="img/icon.png" height="40px" />Si Biru</a>
+        <a class="navbar-brand" href="index.html"><img src="img/icon.png" height="30px" />SiBiru</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -41,38 +42,37 @@
     <!-- titip-->
     <section class="titip" >
       <div class="container">
-        <h3>Titip Belanjaan</h3>
+        <h3>Transaksi Online</h3>
         <div class="section1">
           <i class="fab fa-shopping-cart fa-lg mr-1"></i> Form Pesanan
           <p></p>
         </div>
         <form class="whatsapp-form">
           <div class="datainput">
+            <select id="wa_transaksi"><label><i class="fas fa-map-marked-alt fa-lg mr-1"></i>Transaksi</label></label>
+              <option value="">Pilih Transaksi</option>
+              <option value="Pembayaran Telkom">Pembayaran Telkom</option>
+              <option value="Token Listrik">Token Listrik</option>
+              <option value="Transfer Rekening BANK">Transfer Rekening BANK</option>
+              <option value="Tarik Tunai">Tarik Tunai</option>
+              <option value="Pembelian Pulsa">Pembelian Pulsa</option>
+            </select>
+            </div>
+          <div class="datainput">
             <input class="validate" id="wa_name" name="name" required="" type="text" value="" />
             <label><i class="fas fa-user fa-lg mr-1"></i> Nama</label>
           </div>
           <div class="datainput">
-            <select id="wa_select">
-              <option value="">-= Pilih Transaksi =-</option>
-              <option value="1">Pembayaran Telkom</option>
-              <option value="2">Token Listrik</option>
-              <option value="2">Transfer Rekening BANK</option>
-              <option value="2">Tarik Tunai</option>
-              <option value="2">Pembelian Pulsa</option>
-            </select>
-          <div class="datainput">
-            <input class="validate" id="wa_email" name="email" required="" type="text" value="" />
+            <input class="validate" id="wa_alamat" name="alamat" required="" type="text" value="" />
             <label><i class="fas fa-map-marked-alt fa-lg mr-1"></i> Alamat</label>
           </div>
-
           <div class="datainput">
-            <input class="validate" id="wa_handphone" name="count" required="" type="number" value="" />
-            <label><i class="fas fa-mobile-alt fa-lg mr-1"></i> No. Handphone</label>
+            <input class="validate" id="wa_rekening" name="rekening" required="" type="number" value="" />
+            <label><i class="fas fa-mobile-alt fa-lg mr-1"></i> No. Pembayaran / Rekening</label>
           </div>
-
           <div class="datainput">
-            <textarea id="wa_textarea" placeholder="" maxlength="1000" row="1" required=""></textarea>
-            <label><i class="fas fa-shopping-cart fa-lg mr-1"></i>Catatan</label>
+            <textarea id="wa_pesan" placeholder="" maxlength="1000" row="1" required=""></textarea>
+            <label><i class="fas fa-shopping-cart fa-lg mr-1"></i>Catatan (Optional)</label>
           </div>
           
 
@@ -87,28 +87,26 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script id="rendered-js">
       $(document).on("click", ".send_form", function () {
-        var input_blanter = document.getElementById("wa_email");
-
+        /* Call Input Form */
+        var input_transaksi = $("#wa_transaksi :selected").text(),
+            input_name = $("#wa_name").val(),
+            input_alamat = $("#wa_alamat").val(),
+            input_rekening = $("#wa_rekening").val(),
+            input_pesan = $("#wa_pesan").val();
         /* Whatsapp Settings */
         var walink = "https://web.whatsapp.com/send",
           phone = "6282259910404",
-          walink2 = "Hai kak berikut data saya :",
+          walink2 = "Transaksi Online",
+          walink3 = "Hai kak berikut data saya :",
           text_yes = "Terkirim.",
-          text_no = "Isi semua Formulir lalu klik Send.";
+          text_no = "Isi semua Formulir dahulu lalu klik Kirim";
 
         /* Smartphone Support */
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
           var walink = "whatsapp://send";
         }
 
-        if ("" != input_blanter.value) {
-          /* Call Input Form */
-          var input_select1 = $("#wa_select :selected").text(),
-            input_name = $("#wa_name").val(),
-            input_email = $("#wa_email").val(),
-            input_handphone = $("#wa_handphone").val(),
-            input_textarea = $("#wa_textarea").val();
-
+        if (input_transaksi != "" && input_name != "" && input_alamat != "" && input_rekening != "" ) {
           /* Final Whatsapp URL */
           var blanter_whatsapp =
             walink +
@@ -117,20 +115,22 @@
             "&text=" +
             walink2 +
             "%0A%0A" +
+            walink3 +
+            "%0A%0A" +
+            "*Transaksi* : " +
+            input_transaksi +
+            "%0A" +
             "*Nama* : " +
-            input_name1 +
+            input_name +
             "%0A" +
             "*Alamat* : " +
-            input_email1 +
+            input_alamat +
             "%0A" +
-            "*No. HP* : " +
-            input_handphone1 +
+            "*No. Pembayaran / Rekening* : " +
+            input_rekening +
             "%0A" +
-            "*Pesanan* : " +
-            input_textarea1 +
-            "%0A" +
-            "*Transaksi* : " +
-            input_select1 +
+            "*Catatan* : " +
+            input_pesan +
             "%0A%0A" +
             "Mohon segera diproses," +
             "%0A" +
